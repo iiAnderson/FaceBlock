@@ -17,6 +17,7 @@ window.onload = function() {
                 reset();
             });
         });
+        refreshfb();
     }
 
     document.getElementById('clear').onclick = function(){
@@ -41,9 +42,19 @@ var updateList = function(){
             return;
         }
         for(var i = 0; i < val.blacklist.length; i++){
-            var dv = document.createElement('div');
-            dv.innerHTML = val.blacklist[i].name + " removes: " + val.blacklist[i].removes;
-            document.getElementById('blockList').appendChild(dv);
+            var table = document.getElementById('blockTable');
+
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = val.blacklist[i].name;
+            cell2.innerHTML = val.blacklist[i].removes;
         }
+    });
+}
+
+var refreshfb = function(){
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
     });
 }
