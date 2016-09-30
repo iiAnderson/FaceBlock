@@ -3,6 +3,7 @@
   "name": "FaceBlock ",
   "description": "A Web Extension to blacklist content on facebook posts",
   "version": "1.0",
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
   "browser_action": {
     "default_popup": "popupPage.html"
   },

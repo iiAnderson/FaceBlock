@@ -1,22 +1,10 @@
 /**
  * Created by Robbie on 24/09/2016.
  */
-window.onload = function() {
+$(document).ready(function () {
     document.getElementById("submit").onclick = function () {
         var phrase = document.getElementById("newBlock").value;
-        chrome.storage.sync.get({"blacklist": []}, function (val) {
-            console.log(val);
-            var f = val.blacklist;
-            var obj = {};
-            obj.name = phrase;
-            obj.removes = 0;
-
-            f[f.length] = obj;
-
-            chrome.storage.sync.set({"blacklist": f}, function () {
-                reset();
-            });
-        });
+        addToStorage(phrase);
         refreshfb();
     }
 
@@ -27,7 +15,36 @@ window.onload = function() {
         });
     }
 
+    $("#liked").change(function() {
+        if(this.checked) {
+            phrase("</span> liked this.");
+            updateList();
+        }
+    });
+    $("#sponsored").change(function() {
+        if(this.checked) {
+            phrase("Sponsored");
+            updateList();
+        }
+    });
+
     updateList();
+});
+
+var phrase = function(phrase){
+    chrome.storage.sync.get({"blacklist": []}, function (val) {
+        console.log(val);
+        var f = val.blacklist;
+        var obj = {};
+        obj.name = phrase;
+        obj.removes = 0;
+
+        f[f.length] = obj;
+
+        chrome.storage.sync.set({"blacklist": f}, function () {
+            reset();
+        });
+    });
 }
 
 var reset = function(){
