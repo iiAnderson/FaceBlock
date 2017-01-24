@@ -5,18 +5,23 @@ $("._5pcb").on('DOMNodeInserted', function() {
     blockPosts();
 });
 
+//Searches through all of the posts in the stream and removes posts that match the blacklist
 function blockPosts(){
     var posts = document.getElementsByClassName("userContentWrapper");
     chrome.storage.sync.get('blacklist', function (val) {
         var blacklist = val.blacklist;
     for(var i=0; i<blacklist.length; i++){
         for (var j = 0; j < posts.length; j++) {
-            console.log(posts[j].innerHTML);
-            if(posts[j].innerHTML.indexOf(blacklist[i]) != -1){
+            if(posts[j].innerHTML.indexOf(blacklist[i].name) != -1){
+                blacklist[i].removes = blacklist[i].removes + 1;
                 var parent = posts[j].parentNode;
-                parent.parentNode.removeChild(parent)
+                parent.parentNode.removeChild(parent);
             }
         }
     }
+    chrome.storage.sync.clear(function(){
+        chrome.storage.sync.set({'blacklist': blacklist}, function () {
+        });
+    });
     });
 }
