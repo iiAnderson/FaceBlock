@@ -5,6 +5,7 @@ $("._5pcb").on('DOMNodeInserted', function() {
     blockPosts();
 });
 
+//Searches through all of the posts in the stream and removes posts that match the blacklist
 function blockPosts(){
     var posts = document.getElementsByClassName("userContentWrapper");
     chrome.storage.sync.get('blacklist', function (val) {
